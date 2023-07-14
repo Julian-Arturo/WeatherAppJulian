@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:weather_app_julian/utils/search_delegate.dart';
-import 'package:weather_app_julian/utils/size_desing.dart';
+import '../export.dart';
 
 class Search extends StatelessWidget {
   const Search({super.key});
@@ -8,13 +6,15 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Responsive size = Responsive(context);
+    final isLargeScreen = size.width > 600;
 
     return GestureDetector(
       onTap: () => showSearch(context: context, delegate: CitySearchDelegate()),
       child: Container(
+        
         margin: const EdgeInsets.only(bottom: 20),
         padding: const EdgeInsets.only(left: 20),
-        width: size.width * 0.9,
+        width: isLargeScreen ? size.width * 0.5 :size.width * 0.9,
         height: 60,
         decoration: BoxDecoration(
           color: const Color(0xA795B4F7),

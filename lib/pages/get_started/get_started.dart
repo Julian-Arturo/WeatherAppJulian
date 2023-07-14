@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:weather_app_julian/utils/size_desing.dart';
+
+
+import '../../export.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({super.key});

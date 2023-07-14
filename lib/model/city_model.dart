@@ -1,4 +1,6 @@
 class City {
+   final City? city;
+  bool isSelected;
   final int? id;
   final String? name;
   final String? country;
@@ -6,6 +8,8 @@ class City {
   final double? lat;
 
   City({
+      this.city,
+     this.isSelected = false,
      this.id,
      this.name,
      this.country,
@@ -23,3 +27,4 @@ class City {
     );
   }
 }
+

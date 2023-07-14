@@ -1,26 +1,24 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-
-import 'package:weather_app_julian/model/city_model.dart';
-import 'package:weather_app_julian/model/weartherdata_model.dart';
-import 'package:weather_app_julian/utils/size_desing.dart';
+import '../export.dart';
 
 class CardTemp extends StatelessWidget {
   CardTemp({
     Key? key,
     required this.city,
   }) : super(key: key);
-  WeatherData city;
+
+  final WeatherData city;
 
   @override
   Widget build(BuildContext context) {
     Responsive size = Responsive(context);
+    String iconCode = city.weather![0].icon!;
+    final isLargeScreen = size.width > 600;
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 70),
-          width: size.width,
-          height: size.height * 0.25,
+          margin: const EdgeInsets.only(top: 70, left: 20, right: 20),
+          width: isLargeScreen ? size.width * 0.3 : size.width,
+          height: isLargeScreen ? size.height * 0.3 : size.height * 0.25,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             gradient: const LinearGradient(
@@ -34,14 +32,17 @@ class CardTemp extends StatelessWidget {
         Positioned(
           left: 20,
           right: 20,
-          top: -size.height * 0.01,
+          top: isLargeScreen ? size.height * 0.06 : size.height * 0.05,
           child: SizedBox(
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("assets/images/sol.png", scale: 0.8),
+                Image.asset(
+                  getWeatherIcon(iconCode),
+                  width: isLargeScreen ? size.width * 0.1 : size.width * 0.28,
+                ),
                 ShaderMask(
                   shaderCallback: (Rect bounds) {
                     return const LinearGradient(
@@ -54,7 +55,7 @@ class CardTemp extends StatelessWidget {
                     ).createShader(bounds);
                   },
                   child: Text(
-                    "${city.main.temp}",
+                    "${city.main!.temp!.toStringAsFixed(2).substring(0, 2)}°",
                     style: const TextStyle(
                       fontSize: 100,
                       fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class CardTemp extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: size.height * 0.18,
+          top: isLargeScreen ? size.height * 0.25 : size.height * 0.18,
           left: 20,
           right: 20,
           child: Row(
@@ -77,8 +78,20 @@ class CardTemp extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                   " ${city.name}",
-                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    " ${city.name!.toUpperCase()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    city.weather![0].description!,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -91,5 +104,46 @@ class CardTemp extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String getWeatherIcon(String iconCode) {
+    // Mapear los códigos de iconos a las imágenes correspondientes
+    switch (iconCode) {
+      case "01d":
+        return "assets/images/sunny.png";
+      case "01n":
+        return "assets/images/moon.png";
+      case "02d":
+        return "assets/images/sol.png";
+      case "02n":
+        return "assets/images/nochenube.png";
+      case "03d":
+      case "03n":
+        return "assets/images/nube.png";
+      case "04d":
+      case "04n":
+        return "assets/images/nubecasi.png";
+      case "09d":
+      case "09n":
+        return "assets/images/nubelluviosa.png";
+      case "10d":
+        return "assets/images/Lrain.png";
+      case "10n":
+        return "assets/images/Lrain1.png";
+      case "11d":
+        return "assets/images/hail.png";
+      case "11n":
+        return "assets/images/hail0.png";
+      case "13d":
+        return "assets/images/snow.png";
+      case "13n":
+        return "assets/images/SnowN.png";
+      case "50d":
+        return "assets/images/Foggy.png";
+      case "50n":
+        return "assets/images/foggy0.png";
+      default:
+        return "assets/images/sunny.png";
+    }
   }
 }
